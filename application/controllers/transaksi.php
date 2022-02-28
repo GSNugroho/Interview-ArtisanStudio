@@ -9,18 +9,18 @@ class transaksi extends CI_Controller {
         $this->load->helper('url');
 	}
  
-    function add_to_cart(){ //fungsi Add To Cart
+    function add_to_cart(){ 
         $data = array(
             'id' => $this->input->post('produk_id'), 
             'name' => $this->input->post('produk_nama'), 
             'price' => $this->input->post('produk_harga'), 
             'qty' => $this->input->post('quantity'), 
         );
-        $this->cart->insert($data);
-        echo $this->show_cart(); //tampilkan cart setelah added
+        $this->cart->insert($data) ;
+        echo $this->show_cart(); 
     }
  
-    function show_cart(){ //Fungsi untuk menampilkan Cart
+    function show_cart(){ 
         $output = '';
         $no = 0;
         foreach ($this->cart->contents() as $items) {
@@ -44,11 +44,11 @@ class transaksi extends CI_Controller {
         return $output;
     }
  
-    function load_cart(){ //load data cart
+    function load_cart(){ 
         echo $this->show_cart();
     }
  
-    function hapus_cart(){ //fungsi untuk menghapus item cart
+    function hapus_cart(){ 
         $data = array(
             'rowid' => $this->input->post('row_id'), 
             'qty' => 0, 
