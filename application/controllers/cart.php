@@ -1,34 +1,39 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-class transaksi extends CI_Controller {
+class cart extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();		
 		$this->load->model('test_model');
         $this->load->helper('url');
 	}
+
+    function index(){
+        $data['data']=$this->test_model->getData()->result();
+        $this->load->view('cart/cart',$data);
+    }
  
-    function add_to_cart(){ 
+    function addcart(){ 
         $data = array(
-            'id' => $this->input->post('produk_id'), 
-            'name' => $this->input->post('produk_nama'), 
-            'price' => $this->input->post('produk_harga'), 
-            'qty' => $this->input->post('quantity'), 
+            'id_barang' => $this->input->post('id_barang'), 
+            'nama_barang' => $this->input->post('nama_barang'), 
+            'harga_barang' => $this->input->post('harga_barang'), 
+            'qty' => $this->input->post('qty'), 
         );
         $this->cart->insert($data) ;
         echo $this->show_cart(); 
     }
  
-    function show_cart(){ 
+    function showcart(){ 
         $output = '';
         $no = 0;
         foreach ($this->cart->contents() as $items) {
             $no++;
             $output .='
                 <tr>
-                    <td>'.$items['name'].'</td>
-                    <td>'.number_format($items['price']).'</td>
+                    <td>'.$items['nama_barang'].'</td>
+                    <td>'.number_format($items['harga_barang']).'</td>
                     <td>'.$items['qty'].'</td>
                     <td>'.number_format($items['subtotal']).'</td>
                     <td><button type="button" id="'.$items['rowid'].'" class="hapus_cart btn btn-danger btn-xs">Batal</button></td>
@@ -44,16 +49,16 @@ class transaksi extends CI_Controller {
         return $output;
     }
  
-    function load_cart(){ 
-        echo $this->show_cart();
+    function loadcart(){ 
+        echo $this->showCart();
     }
  
-    function hapus_cart(){ 
+    function deletecart(){ 
         $data = array(
             'rowid' => $this->input->post('row_id'), 
             'qty' => 0, 
         );
         $this->cart->update($data);
-        echo $this->show_cart();
+        echo $this->showCart();
     }
 }
